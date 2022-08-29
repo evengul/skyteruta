@@ -1,0 +1,1 @@
+# Skyteruta - Veien til skytestevnet
