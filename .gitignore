@@ -1,0 +1,9 @@
+.DS_STORE
+*.cache
+*.tsbuildinfo
+*.lst
+*.log
+node_modules
+dist
+build
+target

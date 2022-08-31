@@ -1,0 +1,23 @@
+.calendar {
+  border-collapse: separate;
+  border-spacing: 0.125em 0;
+  table-layout: fixed;
+}
+
+.calendar-header {
+  border-bottom: 1px solid;
+}
+
+.calendar-row {
+  margin: 0;
+  width: 25px;
+}
+
+.calendar-cell {
+  width: 25px;
+  height: 25px;
+}
+
+.calendar-cell-filled {
+  background-color: red;
+}
