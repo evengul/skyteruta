@@ -25,7 +25,6 @@ export default function AddLog({ isOpen, close, onSave, selected }: AddLogProps)
   });
 
   useEffect(() => {
-    console.log('selected changed', selected);
     form.setFieldValue('content', selected?.content ?? '');
     form.setFieldValue('title', selected?.title ?? '');
   }, [selected]);

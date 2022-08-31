@@ -18,7 +18,7 @@ const collectionName = 'logs';
 
 export const useLog = () => {
   const [user, loadingUser] = useAuthState(getAuth());
-  const [data, loadingData, error] = useCollectionData(
+  const [data, loadingData] = useCollectionData(
     user
       ? query(
           collection(getFirestore(), collectionName),
@@ -27,8 +27,6 @@ export const useLog = () => {
         )
       : undefined,
   );
-
-  console.log(error);
 
   const logs = useMemo(() => {
     return (data ?? []) as LogEntry[];
