@@ -1,4 +1,13 @@
-import { collection, deleteDoc, doc, getFirestore, query, setDoc, where } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getFirestore,
+  orderBy,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 import { useCallback, useMemo } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -9,18 +18,25 @@ const collectionName = 'logs';
 
 export const useLog = () => {
   const [user, loadingUser] = useAuthState(getAuth());
-  const [data, loadingData] = useCollectionData(
+  const [data, loadingData, error] = useCollectionData(
     user
-      ? query(collection(getFirestore(), collectionName), where('owner', '==', user.uid))
+      ? query(
+          collection(getFirestore(), collectionName),
+          where('owner', '==', user.uid),
+          orderBy('createdAt', 'desc'),
+        )
       : undefined,
   );
+
+  console.log(error);
 
   const logs = useMemo(() => {
     return (data ?? []) as LogEntry[];
   }, [data]);
 
-  const handleAddOrEdit = useCallback((entry: LogEntry) => {
-    setDoc(doc(getFirestore(), collectionName, entry.id), entry);
+  const handleAddOrEdit = useCallback((entry: Omit<LogEntry, 'id'>) => {
+    const ref = doc(collection(getFirestore(), collectionName));
+    setDoc(ref, { ...entry, id: ref.id });
   }, []);
 
   const handleRemove = useCallback((id: string) => {
