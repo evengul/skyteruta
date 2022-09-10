@@ -1,11 +1,11 @@
 import {
   collection,
-  deleteDoc,
   doc,
   getFirestore,
   orderBy,
   query,
   setDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import { useCallback, useMemo } from 'react';
@@ -32,13 +32,15 @@ export const useLog = () => {
     return (data ?? []) as LogEntry[];
   }, [data]);
 
-  const handleAddOrEdit = useCallback((entry: Omit<LogEntry, 'id'>) => {
-    const ref = doc(collection(getFirestore(), collectionName));
-    setDoc(ref, { ...entry, id: ref.id });
+  const handleAddOrEdit = useCallback((entry: Omit<LogEntry, 'id'> & { id?: string }) => {
+    const ref = entry.id
+      ? doc(getFirestore(), collectionName, entry.id)
+      : doc(collection(getFirestore(), collectionName));
+    setDoc(ref, { ...entry, id: ref.id, archived: false });
   }, []);
 
   const handleRemove = useCallback((id: string) => {
-    deleteDoc(doc(getFirestore(), collectionName, id));
+    updateDoc(doc(getFirestore(), collectionName, id), { archived: true });
   }, []);
 
   return {

@@ -8,7 +8,7 @@ import { LogEntry } from '../model/logEntry';
 interface AddLogProps {
   isOpen: boolean;
   close: () => void;
-  onSave: (logEntry: Omit<LogEntry, 'id'>) => void;
+  onSave: (logEntry: Omit<LogEntry, 'id'> & { id?: string }) => void;
   selected?: LogEntry;
 }
 
@@ -27,7 +27,7 @@ export default function AddLog({ isOpen, close, onSave, selected }: AddLogProps)
   useEffect(() => {
     form.setFieldValue('content', selected?.content ?? '');
     form.setFieldValue('title', selected?.title ?? '');
-  }, [selected]);
+  }, [selected, isOpen]);
 
   if (!user) {
     return null;
@@ -38,6 +38,7 @@ export default function AddLog({ isOpen, close, onSave, selected }: AddLogProps)
       <form
         onSubmit={form.onSubmit((values) => {
           onSave({
+            id: selected?.id,
             owner: user.uid,
             createdAt: selected?.createdAt ?? new Date().getTime(),
             title: values.title,
@@ -58,6 +59,7 @@ export default function AddLog({ isOpen, close, onSave, selected }: AddLogProps)
           <Textarea
             label='Innhold'
             placeholder='Innhold'
+            value={form.values.content}
             onChange={(event) => form.setFieldValue('content', event.currentTarget.value)}
             autosize
             minRows={3}
