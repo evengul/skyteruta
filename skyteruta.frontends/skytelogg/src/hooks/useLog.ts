@@ -1,11 +1,11 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getFirestore,
   orderBy,
   query,
   setDoc,
-  updateDoc,
   where,
 } from 'firebase/firestore';
 import { useCallback, useMemo } from 'react';
@@ -40,7 +40,7 @@ export const useLog = () => {
   }, []);
 
   const handleRemove = useCallback((id: string) => {
-    updateDoc(doc(getFirestore(), collectionName, id), { archived: true });
+    deleteDoc(doc(getFirestore(), collectionName, id));
   }, []);
 
   return {
