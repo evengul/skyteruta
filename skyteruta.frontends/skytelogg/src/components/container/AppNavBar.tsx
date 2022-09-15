@@ -36,7 +36,13 @@ interface AppNavbarProps {
 
 export default function AppNavBar({ opened, setOpened }: AppNavbarProps) {
   return (
-    <Navbar p='md' width={{ sm: 200, lg: 300 }} hiddenBreakpoint='sm' height={500} hidden={!opened}>
+    <Navbar
+      p='md'
+      width={{ sm: 200, lg: 300 }}
+      hiddenBreakpoint='sm'
+      height={'100vh'}
+      hidden={!opened}
+    >
       <Stack sx={{ margin: 5 }}>
         {links.map((link) => (
           <MenuButton

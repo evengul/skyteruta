@@ -9,7 +9,7 @@ export default function Container({ children }: PropsWithChildren) {
   return (
     <BrowserRouter>
       <AppShell
-        navbarOffsetBreakpoint='sm'
+        sx={{ padding: 0 }}
         navbar={<AppNavBar opened={opened} setOpened={setOpened} />}
         header={<AppHeader opened={opened} setOpened={setOpened} />}
       >
