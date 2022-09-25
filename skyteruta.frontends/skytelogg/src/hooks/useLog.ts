@@ -8,7 +8,7 @@ import {
   setDoc,
   where,
 } from 'firebase/firestore';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { LogEntry } from '../model/logEntry';
@@ -18,15 +18,21 @@ const collectionName = 'logs';
 
 export const useLog = () => {
   const [user, loadingUser] = useAuthState(getAuth());
-  const [data, loadingData] = useCollectionData(
+  const [data, loadingData, dataError] = useCollectionData(
     user
       ? query(
           collection(getFirestore(), collectionName),
           where('owner', '==', user.uid),
-          orderBy('createdAt', 'desc'),
+          orderBy('performedAt', 'desc'),
         )
       : undefined,
   );
+
+  useEffect(() => {
+    if (dataError) {
+      console.warn('Firestore error for logs: ', dataError);
+    }
+  });
 
   const logs = useMemo(() => {
     return (data ?? []) as LogEntry[];

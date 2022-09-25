@@ -40,8 +40,10 @@ export default function AddLog({ isOpen, close, onSave, selected }: AddLogProps)
           id: selected?.id,
           owner: user.uid,
           createdAt: selected?.createdAt ?? new Date().getTime(),
+          performedAt: selected?.performedAt ?? null,
           title: values.title,
           content: values.content,
+          plan: null,
         });
         form.reset();
         close();
